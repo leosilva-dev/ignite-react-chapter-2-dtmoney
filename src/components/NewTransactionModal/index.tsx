@@ -4,8 +4,8 @@ import outcomeImg from "../../assets/outcome.svg";
 import closeImg from "../../assets/close.svg";
 
 import { Container, TransactionTypeContainer, RadioBox } from "./style";
-import { FormEvent, useContext, useState } from "react";
-import { TransactionContext } from "../TransactionsContext";
+import { FormEvent, useState } from "react";
+import { useTransactions } from "../../hooks/useTransactions";
 
 interface NewTransitionModalProps {
   isOpen: boolean;
@@ -18,7 +18,7 @@ export function NewTransitionModal({
   isOpen,
   onRequestClose,
 }: NewTransitionModalProps) {
-  const { createTransaction } = useContext(TransactionContext);
+  const { createTransaction } = useTransactions();
 
   const [title, setTitle] = useState("");
   const [amount, setAmount] = useState(0);

@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { api } from "../services/api";
 
 interface Transaction {
@@ -21,7 +21,7 @@ interface TransactionsContextData {
   createTransaction(transaction: TransactionInput): Promise<void>;
 }
 
-export const TransactionContext = createContext<TransactionsContextData>(
+const TransactionContext = createContext<TransactionsContextData>(
   {} as TransactionsContextData
 );
 
@@ -49,4 +49,9 @@ export function TransactionsProvider({ children }: TransacitonProviderProps) {
       {children}
     </TransactionContext.Provider>
   );
+}
+
+export function useTransactions() {
+  const context = useContext(TransactionContext);
+  return context;
 }
