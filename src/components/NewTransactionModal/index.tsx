@@ -4,7 +4,8 @@ import outcomeImg from "../../assets/outcome.svg";
 import closeImg from "../../assets/close.svg";
 
 import { Container, TransactionTypeContainer, RadioBox } from "./style";
-import { FormEvent, useState } from "react";
+import { FormEvent, useContext, useState } from "react";
+import { TransactionContext } from "../TransactionsContext";
 
 interface NewTransitionModalProps {
   isOpen: boolean;
@@ -17,14 +18,23 @@ export function NewTransitionModal({
   isOpen,
   onRequestClose,
 }: NewTransitionModalProps) {
+  const { createTransaction } = useContext(TransactionContext);
+
   const [title, setTitle] = useState("");
-  const [value, setValue] = useState(0);
+  const [amount, setAmount] = useState(0);
   const [category, setCategory] = useState("");
   const [type, setType] = useState("deposit");
 
-  function handleCreateNewTransition(e: FormEvent) {
+  async function handleCreateNewTransition(e: FormEvent) {
     e.preventDefault();
-    // onRequestClose();
+    await createTransaction({ title, amount, category, type });
+
+    setTitle("");
+    setAmount(0);
+    setCategory("");
+    setType("deposit");
+
+    onRequestClose();
   }
 
   return (
@@ -51,8 +61,8 @@ export function NewTransitionModal({
         <input
           placeholder="Valor"
           type="number"
-          value={value}
-          onChange={(e) => setValue(Number(e.target.value))}
+          value={amount}
+          onChange={(e) => setAmount(Number(e.target.value))}
         />
 
         <TransactionTypeContainer>
